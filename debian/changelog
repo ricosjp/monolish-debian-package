@@ -1,4 +1,22 @@
-monolish (0.14.0-1+oss+nvidia) UNRELEASED; urgency=medium
+monolish (0.14.1-1+oss+nvidia) UNRELEASED; urgency=medium
+
+  [ Ryo IGARASHI ]
+  * Fix to build with CMD
+  * Install driver file for compilation.
+  * Use stub library when building.
+  * dh_makeshlibs should look for under /usr/local/cuda-XX.X/lib64/stubs.
+  * dh_shlibdeps should ignore libcuda.so when building.
+  * Fix branch name.
+  * Update rules to search for stubs.
+  * Add symlink of libcuda.so.1 for stub.
+  * Copy built deb files to host.
+  * Update deb file location.
+  * Remove ENV CC and ENV CXX which are not correct.
+  * monolish-debian-package is under ricosjp organization at last.
+
+ -- Ryo IGARASHI <rigarash@ricos.co.jp>  Thu, 08 Jul 2021 16:57:32 +0900
+
+monolish (0.14.0-1+oss+nvidia) focal; urgency=medium
 
   [ Ryo IGARASHI ]
   * Initial release. 
