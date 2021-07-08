@@ -1,4 +1,20 @@
-monolish (0.14.0-1+mkl+nvidia) UNRELEASED; urgency=medium
+monolish (0.14.1-1+mkl+nvidia) UNRELEASED; urgency=medium
+
+  [ Ryo IGARASHI ]
+  * Update Dockerfile.
+  * Add version update patch.
+  * Change CMD to RUN
+  * Change LLVM version on installed files.
+  * Update deb file location.
+  * Add symlink of libcuda.so.1 for stub.
+  * Fix CC and CXX setting.
+  * Add ENV LIBRARY_FLAGS
+  * monolish-debian-package is under ricosjp organization at last.
+  * sync debian/rules to oss+nvidia branch.
+
+ -- Ryo IGARASHI <rigarash@ricos.co.jp>  Thu, 08 Jul 2021 17:19:04 +0900
+
+monolish (0.14.0-1+mkl+nvidia) focal; urgency=medium
 
   [ Ryo IGARASHI ]
   * Initial release. 
