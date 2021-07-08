@@ -1,4 +1,13 @@
-monolish (0.14.0-1+mkl) UNRELEASED; urgency=medium
+monolish (0.14.1-1+mkl) UNRELEASED; urgency=medium
+
+  [ Ryo IGARASHI ]
+  * Change branch name in gbp.conf as well.
+  * monolish-debian-package is under ricosjp organization at last.
+  * Update deb file location.
+
+ -- RYO IGARASHI <rigarash@ricos.co.jp>  Thu, 08 Jul 2021 16:47:38 +0900
+
+monolish (0.14.0-1+mkl) focal; urgency=medium
 
   [ Ryo IGARASHI ]
   * Initial release. 
