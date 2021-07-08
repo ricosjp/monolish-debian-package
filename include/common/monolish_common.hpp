@@ -1,4 +1,7 @@
 #pragma once
+#if USE_SXAT
+#undef _HAS_CPP17
+#endif
 #include "monolish_dense.hpp"
 #include "monolish_logger.hpp"
 #include "monolish_matrix.hpp"
@@ -14,11 +17,30 @@
 #define MONOLISH_SOLVER_RESIDUAL_NAN -4
 #define MONOLISH_SOLVER_NOT_IMPL -10
 
-namespace monolish {
 /**
  * @brief monolish utilities
  */
-namespace util {
+namespace monolish::util {
+
+/**
+ * @brief get the number of devices
+ * @return the number of devices (If the device is not found or the GPU is not
+ * enabled, return value is negative)
+ */
+int get_num_devices();
+
+/**
+ * @brief set default device number
+ * @return if the GPU is not enabled, return false
+ */
+bool set_default_device(size_t device_num);
+
+/**
+ * @brief get default device number
+ * @return the device number (If the device is not found or the GPU is not
+ * enabled, return value is negative)
+ */
+int get_default_device();
 
 /**
  * @brief get nrm |b-Ax|_2
@@ -214,7 +236,7 @@ float get_residual_l2(const matrix::LinearOperator<float> &A,
  * - MONOLISH_SOLVER_RESIDUAL_NAN -4
  * - MONOLISH_SOLVER_NOT_IMPL -10
  */
-bool solver_check(const int err);
+[[nodiscard]] bool solver_check(const int err);
 
 /// Logger utils ///////////////////////////////
 /**
@@ -265,7 +287,8 @@ void random_vector(vector<T> &vec, const T min, const T max) {
 /**
  * @brief compare matrix structure
  **/
-template <typename T, typename U> bool is_same_structure(const T A, const U B) {
+template <typename T, typename U>
+[[nodiscard]] bool is_same_structure(const T A, const U B) {
   return false;
 }
 
@@ -280,7 +303,7 @@ template <typename T, typename U> bool is_same_structure(const T A, const U B) {
  * - GPU acceleration: false
  **/
 template <typename T>
-bool is_same_structure(const vector<T> &x, const vector<T> &y) {
+[[nodiscard]] bool is_same_structure(const vector<T> &x, const vector<T> &y) {
   return x.size() == y.size();
 }
 
@@ -295,7 +318,8 @@ bool is_same_structure(const vector<T> &x, const vector<T> &y) {
  * - GPU acceleration: false
  **/
 template <typename T>
-bool is_same_structure(const matrix::Dense<T> &A, const matrix::Dense<T> &B);
+[[nodiscard]] bool is_same_structure(const matrix::Dense<T> &A,
+                                     const matrix::Dense<T> &B);
 
 /**
  * @brief compare structure using col_index and row_index, M, and N
@@ -308,7 +332,8 @@ bool is_same_structure(const matrix::Dense<T> &A, const matrix::Dense<T> &B);
  * - GPU acceleration: false
  **/
 template <typename T>
-bool is_same_structure(const matrix::COO<T> &A, const matrix::COO<T> &B);
+[[nodiscard]] bool is_same_structure(const matrix::COO<T> &A,
+                                     const matrix::COO<T> &B);
 
 /**
  * @brief compare structure using structure_hash, M, and N
@@ -321,7 +346,8 @@ bool is_same_structure(const matrix::COO<T> &A, const matrix::COO<T> &B);
  * - GPU acceleration: false
  **/
 template <typename T>
-bool is_same_structure(const matrix::CRS<T> &A, const matrix::CRS<T> &B);
+[[nodiscard]] bool is_same_structure(const matrix::CRS<T> &A,
+                                     const matrix::CRS<T> &B);
 
 /**
  * @brief compare structure using M and N (same as is_same_size())
@@ -341,7 +367,8 @@ bool is_same_structure(const matrix::LinearOperator<T> &A,
  * @brief compare matrix structure
  **/
 template <typename T, typename... types>
-bool is_same_structure(const T &A, const T &B, const types &... args) {
+[[nodiscard]] bool is_same_structure(const T &A, const T &B,
+                                     const types &... args) {
   return is_same_structure(A, B) && is_same_structure(A, args...);
 }
 
@@ -355,7 +382,8 @@ bool is_same_structure(const T &A, const T &B, const types &... args) {
  * - Multi-threading: false
  * - GPU acceleration: false
  **/
-template <typename T, typename U> bool is_same_size(const T &x, const U &y) {
+template <typename T, typename U>
+[[nodiscard]] bool is_same_size(const T &x, const U &y) {
   return x.size() == y.size();
 }
 
@@ -370,7 +398,8 @@ template <typename T, typename U> bool is_same_size(const T &x, const U &y) {
  * - GPU acceleration: false
  **/
 template <typename T>
-bool is_same_size(const matrix::Dense<T> &A, const matrix::Dense<T> &B);
+[[nodiscard]] bool is_same_size(const matrix::Dense<T> &A,
+                                const matrix::Dense<T> &B);
 
 /**
  * @brief compare row and col size
@@ -383,7 +412,8 @@ bool is_same_size(const matrix::Dense<T> &A, const matrix::Dense<T> &B);
  * - GPU acceleration: false
  **/
 template <typename T>
-bool is_same_size(const matrix::COO<T> &A, const matrix::COO<T> &B);
+[[nodiscard]] bool is_same_size(const matrix::COO<T> &A,
+                                const matrix::COO<T> &B);
 
 /**
  * @brief compare row and col size
@@ -396,7 +426,8 @@ bool is_same_size(const matrix::COO<T> &A, const matrix::COO<T> &B);
  * - GPU acceleration: false
  **/
 template <typename T>
-bool is_same_size(const matrix::CRS<T> &A, const matrix::CRS<T> &B);
+[[nodiscard]] bool is_same_size(const matrix::CRS<T> &A,
+                                const matrix::CRS<T> &B);
 
 /**
  * @brief compare row and col size
@@ -409,14 +440,15 @@ bool is_same_size(const matrix::CRS<T> &A, const matrix::CRS<T> &B);
  * - GPU acceleration: false
  **/
 template <typename T>
-bool is_same_size(const matrix::LinearOperator<T> &A,
-                  const matrix::LinearOperator<T> &B);
+[[nodiscard]] bool is_same_size(const matrix::LinearOperator<T> &A,
+                                const matrix::LinearOperator<T> &B);
 
 /**
  * @brief compare matrix size
  **/
 template <typename T, typename U, typename... types>
-bool is_same_size(const T &arg1, const U &arg2, const types &... args) {
+[[nodiscard]] bool is_same_size(const T &arg1, const U &arg2,
+                                const types &... args) {
   return is_same_size(arg1, arg2) && is_same_size(arg1, args...);
 }
 
@@ -428,7 +460,7 @@ bool is_same_size(const T &arg1, const U &arg2, const types &... args) {
  * - GPU acceleration: false
  **/
 template <typename T, typename U>
-bool is_same_device_mem_stat(const T &arg1, const U &arg2) {
+[[nodiscard]] bool is_same_device_mem_stat(const T &arg1, const U &arg2) {
   return arg1.get_device_mem_stat() == arg2.get_device_mem_stat();
 }
 
@@ -440,8 +472,8 @@ bool is_same_device_mem_stat(const T &arg1, const U &arg2) {
  * - GPU acceleration: false
  **/
 template <typename T, typename U, typename... types>
-bool is_same_device_mem_stat(const T &arg1, const U &arg2,
-                             const types &... args) {
+[[nodiscard]] bool is_same_device_mem_stat(const T &arg1, const U &arg2,
+                                           const types &... args) {
   return is_same_device_mem_stat(arg1, arg2) &&
          is_same_device_mem_stat(arg1, args...);
 }
@@ -461,8 +493,8 @@ bool is_same_device_mem_stat(const T &arg1, const U &arg2,
  * - GPU acceleration: false
  **/
 template <typename T>
-matrix::COO<T> band_matrix(const int M, const int N, const int W,
-                           const T diag_val, const T val);
+[[nodiscard]] matrix::COO<T> band_matrix(const int M, const int N, const int W,
+                                         const T diag_val, const T val);
 
 /**
  * @brief create random structure matrix (column number is decided by random)
@@ -476,8 +508,9 @@ matrix::COO<T> band_matrix(const int M, const int N, const int W,
  * - GPU acceleration: false
  **/
 template <typename T>
-matrix::COO<T> random_structure_matrix(const int M, const int N,
-                                       const int nnzrow, const T val);
+[[nodiscard]] matrix::COO<T> random_structure_matrix(const int M, const int N,
+                                                     const int nnzrow,
+                                                     const T val);
 
 /**
  * @brief create band matrix
@@ -487,7 +520,7 @@ matrix::COO<T> random_structure_matrix(const int M, const int N,
  * - Multi-threading: false
  * - GPU acceleration: false
  **/
-template <typename T> matrix::COO<T> eye(const int M);
+template <typename T>[[nodiscard]] matrix::COO<T> eye(const int M);
 
 /**
  * @brief create Frank matrix
@@ -497,7 +530,7 @@ template <typename T> matrix::COO<T> eye(const int M);
  * - Multi-threading: false
  * - GPU acceleration: false
  **/
-template <typename T> matrix::COO<T> frank_matrix(const int &M);
+template <typename T>[[nodiscard]] matrix::COO<T> frank_matrix(const int &M);
 
 /**
  * @brief Nth eigenvalue from the bottom of MxM Frank matrix
@@ -508,7 +541,8 @@ template <typename T> matrix::COO<T> frank_matrix(const int &M);
  * - Multi-threading: false
  * - GPU acceleration: false
  **/
-template <typename T> T frank_matrix_eigenvalue(const int &M, const int &N);
+template <typename T>
+[[nodiscard]] T frank_matrix_eigenvalue(const int &M, const int &N);
 
 /**
  * @brief create tridiagonal Toeplitz matrix
@@ -521,7 +555,8 @@ template <typename T> T frank_matrix_eigenvalue(const int &M, const int &N);
  * - GPU acceleration: false
  **/
 template <typename T>
-matrix::COO<T> tridiagonal_toeplitz_matrix(const int &M, T a, T b);
+[[nodiscard]] matrix::COO<T> tridiagonal_toeplitz_matrix(const int &M, T a,
+                                                         T b);
 
 /**
  * @brief Nth smallest eigenvalue of MxM tridiagonal Toeplitz matrix
@@ -535,7 +570,8 @@ matrix::COO<T> tridiagonal_toeplitz_matrix(const int &M, T a, T b);
  * - GPU acceleration: false
  **/
 template <typename T>
-T tridiagonal_toeplitz_matrix_eigenvalue(const int &M, int N, T a, T b);
+[[nodiscard]] T tridiagonal_toeplitz_matrix_eigenvalue(const int &M, int N, T a,
+                                                       T b);
 
 /**
  * @brief create 1D Laplacian matrix
@@ -545,7 +581,8 @@ T tridiagonal_toeplitz_matrix_eigenvalue(const int &M, int N, T a, T b);
  * - Multi-threading: false
  * - GPU acceleration: false
  **/
-template <typename T> matrix::COO<T> laplacian_matrix_1D(const int &M);
+template <typename T>
+[[nodiscard]] matrix::COO<T> laplacian_matrix_1D(const int &M);
 
 /**
  * @brief Nth smallest eigenvalue of 1D Laplacian matrix
@@ -556,7 +593,21 @@ template <typename T> matrix::COO<T> laplacian_matrix_1D(const int &M);
  * - Multi-threading: false
  * - GPU acceleration: false
  **/
-template <typename T> T laplacian_matrix_1D_eigenvalue(const int &M, int N);
+template <typename T>
+[[nodiscard]] T laplacian_matrix_1D_eigenvalue(const int &M, int N);
+
+/**
+ * @brief create two dimensional Laplacian matrix using the five point central
+ *difference scheme
+ * @param M # of grid point
+ * @param N # of grid point
+ * @note
+ * - # of computation: N*M
+ * - Multi-threading: false
+ * - GPU acceleration: false
+ **/
+template <typename T>
+[[nodiscard]] matrix::COO<T> laplacian_matrix_2D_5p(const int M, const int N);
 
 /**
  * @brief create Toeplitz-plus-Hankel matrix
@@ -572,7 +623,8 @@ template <typename T> T laplacian_matrix_1D_eigenvalue(const int &M, int N);
  * - GPU acceleration: false
  */
 template <typename T>
-matrix::COO<T> toeplitz_plus_hankel_matrix(const int &M, T a0, T a1, T a2);
+[[nodiscard]] matrix::COO<T> toeplitz_plus_hankel_matrix(const int &M, T a0,
+                                                         T a1, T a2);
 
 /**
  * @brief Nth smallest eigenvalue of GEVP Ax=lBx of Toeplitz-plus-Hankel
@@ -587,8 +639,9 @@ matrix::COO<T> toeplitz_plus_hankel_matrix(const int &M, T a0, T a1, T a2);
  * - GPU acceleration: false
  */
 template <typename T>
-T toeplitz_plus_hankel_matrix_eigenvalue(const int &M, int N, T a0, T a1, T a2,
-                                         T b0, T b1, T b2);
+[[nodiscard]] T toeplitz_plus_hankel_matrix_eigenvalue(const int &M, int N,
+                                                       T a0, T a1, T a2, T b0,
+                                                       T b1, T b2);
 
 // send///////////////////
 
@@ -638,39 +691,43 @@ auto device_free(T &x, Types &... args) {
 /**
  * @brief get build option (true: with avx, false: without avx)
  **/
-bool build_with_avx();
+[[nodiscard]] bool build_with_avx();
 
 /**
  * @brief get build option (true: with avx2, false: without avx2)
  **/
-bool build_with_avx2();
+[[nodiscard]] bool build_with_avx2();
 
 /**
  * @brief get build option (true: with avx512, false: without avx512)
  **/
-bool build_with_avx512();
+[[nodiscard]] bool build_with_avx512();
+
+/**
+ * @brief get build option (true: enable MPI, false: disable MPI)
+ **/
+[[nodiscard]] bool build_with_mpi();
 
 /**
  * @brief get build option (true: enable gpu, false: disable gpu)
  **/
-bool build_with_gpu();
+[[nodiscard]] bool build_with_gpu();
 
 /**
  * @brief get build option (true: with intel mkl, false: without intel mkl)
  **/
-bool build_with_mkl();
+[[nodiscard]] bool build_with_mkl();
 
 /**
  * @brief get build option (true: with lapack, false: without lapack (=with
  *intel mkl))
  **/
-bool build_with_lapack();
+[[nodiscard]] bool build_with_lapack();
 
 /**
  * @brief get build option (true: with cblas, false: without cblas (=with intel
  *mkl))
  **/
-bool build_with_cblas();
+[[nodiscard]] bool build_with_cblas();
 
-} // namespace util
-} // namespace monolish
+} // namespace monolish::util

@@ -2,16 +2,12 @@
 #pragma once
 
 #include "../common/monolish_common.hpp"
-#if defined USE_MPI
-#include <mpi.h>
-#endif
 
-namespace monolish {
 /**
  * @brief
  * Vector and Matrix element-wise math library
  */
-namespace vml {
+namespace monolish::vml {
 
 /**
  * @brief element by element addition of vector a and vector b.
@@ -1072,12 +1068,12 @@ void min(const view1D<vector<float>, float> &a,
  * - Multi-threading: true
  * - GPU acceleration: true
  */
-double max(const vector<double> &y);
-double max(const view1D<vector<double>, double> &y);
-double max(const view1D<matrix::Dense<double>, double> &y);
-float max(const vector<float> &y);
-float max(const view1D<vector<float>, float> &y);
-float max(const view1D<matrix::Dense<float>, float> &y);
+[[nodiscard]] double max(const vector<double> &y);
+[[nodiscard]] double max(const view1D<vector<double>, double> &y);
+[[nodiscard]] double max(const view1D<matrix::Dense<double>, double> &y);
+[[nodiscard]] float max(const vector<float> &y);
+[[nodiscard]] float max(const view1D<vector<float>, float> &y);
+[[nodiscard]] float max(const view1D<matrix::Dense<float>, float> &y);
 
 /**
  * @brief Finds the smallest element in vector (min(y[0:N]))
@@ -1088,12 +1084,12 @@ float max(const view1D<matrix::Dense<float>, float> &y);
  * - Multi-threading: true
  * - GPU acceleration: true
  */
-double min(const vector<double> &y);
-double min(const view1D<vector<double>, double> &y);
-double min(const view1D<matrix::Dense<double>, double> &y);
-float min(const vector<float> &y);
-float min(const view1D<vector<float>, float> &y);
-float min(const view1D<matrix::Dense<float>, float> &y);
+[[nodiscard]] double min(const vector<double> &y);
+[[nodiscard]] double min(const view1D<vector<double>, double> &y);
+[[nodiscard]] double min(const view1D<matrix::Dense<double>, double> &y);
+[[nodiscard]] float min(const vector<float> &y);
+[[nodiscard]] float min(const view1D<vector<float>, float> &y);
+[[nodiscard]] float min(const view1D<matrix::Dense<float>, float> &y);
 
 /**
  * @brief reciprocal to double precision vector elements (y[0:N] = 1 / a[0:N])
@@ -1132,6 +1128,4 @@ void reciprocal(const view1D<matrix::Dense<float>, float> &a,
                 view1D<vector<float>, float> &y);
 void reciprocal(const view1D<matrix::Dense<float>, float> &a,
                 view1D<matrix::Dense<float>, float> &y);
-
-} // namespace vml
-} // namespace monolish
+} // namespace monolish::vml

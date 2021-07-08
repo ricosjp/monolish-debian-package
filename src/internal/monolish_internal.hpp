@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../include/monolish_mpi.hpp"
 #include <algorithm>
 #include <cassert>
 #include <iostream>
@@ -13,7 +14,7 @@
 #include <cblas.h>
 #endif
 
-#ifdef MONOLISH_USE_GPU
+#ifdef MONOLISH_USE_NVIDIA_GPU
 #include "cusparse.h"
 #include <cublas_v2.h>
 #include <cuda_runtime.h>
@@ -27,10 +28,9 @@ using Sreg = __m256;
 using Dreg = __m256d;
 #endif
 
-namespace monolish {
-namespace internal {
+namespace monolish::internal {
 
-#ifdef MONOLISH_USE_GPU
+#ifdef MONOLISH_USE_NVIDIA_GPU
 auto checkError = [](auto result, auto func, auto file, auto line) {
   if (result) {
     fprintf(stderr, "CUDA error at %s:%d code=%d(%s) \"%s\" \n", file, line,
@@ -147,5 +147,4 @@ size_t vhash(const size_t N, const int *y, const int seed_value,
 size_t vhash(const size_t N, const size_t *y, const size_t seed_value,
              bool gpu_status);
 
-} // namespace internal
-} // namespace monolish
+} // namespace monolish::internal

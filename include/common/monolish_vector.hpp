@@ -13,13 +13,19 @@
 #include <fstream>
 #include <iostream>
 #include <iterator>
+#include <memory>
 #include <omp.h>
-#include <random>
 #include <stdexcept>
 #include <string>
 #include <vector>
 
-#include <memory>
+#if USE_SXAT
+#undef _HAS_CPP17
+#endif
+#include <random>
+#if USE_SXAT
+#define _HAS_CPP17 1
+#endif
 
 #if defined USE_MPI
 #include <mpi.h>
@@ -201,7 +207,7 @@ public:
    * - Multi-threading: false
    * - GPU acceleration: true
    **/
-  bool get_device_mem_stat() const { return gpu_status; }
+  [[nodiscard]] bool get_device_mem_stat() const { return gpu_status; }
 
   /**
    * @brief destructor of vector, free GPU memory
@@ -216,7 +222,7 @@ public:
     }
   }
 
-  size_t get_offset() const { return 0; }
+  [[nodiscard]] size_t get_offset() const { return 0; }
 
   // util
   // ///////////////////////////////////////////////////////////////////////////
@@ -227,7 +233,7 @@ public:
    * @note
    * - # of computation: 1
    **/
-  const Float *data() const { return val.data(); }
+  [[nodiscard]] const Float *data() const { return val.data(); }
 
   /**
    * @brief returns a direct pointer to the vector
@@ -235,7 +241,7 @@ public:
    * @note
    * - # of computation: 1
    **/
-  Float *data() { return val.data(); }
+  [[nodiscard]] Float *data() { return val.data(); }
 
   /**
    * @brief resize vector (only CPU)
@@ -271,7 +277,7 @@ public:
    * @note
    * - # of computation: 1
    **/
-  const Float *begin() const { return val.data(); }
+  [[nodiscard]] const Float *begin() const { return val.data(); }
 
   /**
    * @brief returns a begin iterator
@@ -279,7 +285,7 @@ public:
    * @note
    * - # of computation: 1
    **/
-  Float *begin() { return val.data(); }
+  [[nodiscard]] Float *begin() { return val.data(); }
 
   /**
    * @brief returns a end iterator
@@ -287,7 +293,7 @@ public:
    * @note
    * - # of computation: 1
    **/
-  const Float *end() const { return val.data() + size(); }
+  [[nodiscard]] const Float *end() const { return val.data() + size(); }
 
   /**
    * @brief returns a end iterator
@@ -295,7 +301,7 @@ public:
    * @note
    * - # of computation: 1
    **/
-  Float *end() { return val.data() + size(); }
+  [[nodiscard]] Float *end() { return val.data() + size(); }
 
   /**
    * @brief get vector size
@@ -303,7 +309,7 @@ public:
    * @note
    * - # of computation: 1
    **/
-  auto size() const { return val.size(); }
+  [[nodiscard]] auto size() const { return val.size(); }
 
   /**
    * @brief get vector size
@@ -311,7 +317,7 @@ public:
    * @note
    * - # of computation: 1
    **/
-  auto get_nnz() const { return val.size(); }
+  [[nodiscard]] auto get_nnz() const { return val.size(); }
 
   /**
    * @brief fill vector elements with a scalar value
@@ -407,10 +413,10 @@ public:
    * - Multi-threading: true
    * - GPU acceleration: true
    **/
-  vector<Float> operator-();
+  [[nodiscard]] vector<Float> operator-();
 
   /**
-   * @brief refetrence to the element at position (v[i])
+   * @brief reference to the element at position (v[i])
    * @param i Position of an element in the vector
    * @return vector element (v[i])
    * @note
@@ -418,7 +424,7 @@ public:
    * - Multi-threading: false
    * - GPU acceleration: false
    **/
-  Float &operator[](size_t i) {
+  [[nodiscard]] Float &operator[](size_t i) {
     if (get_device_mem_stat()) {
       throw std::runtime_error("Error, GPU vector cant use operator[]");
     }
