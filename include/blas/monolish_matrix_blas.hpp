@@ -2,17 +2,12 @@
 #pragma once
 #include "../common/monolish_common.hpp"
 
-#if defined USE_MPI
-#include <mpi.h>
-#endif
-
-namespace monolish {
 /**
  * @brief
  * Basic Linear Algebra Subprograms for Dense Matrix, Sparse Matrix, Vector and
  * Scalar
  */
-namespace blas {
+namespace monolish::blas {
 
 /**
  * @brief Dense matrix copy (C=A)
@@ -221,6 +216,21 @@ void matmul(const matrix::LinearOperator<float> &A,
             matrix::LinearOperator<float> &C);
 
 /**
+ * @brief LinearOperator multiplication: C = AB
+ * @param A LinearOperator (size M x K)
+ * @param B Dense matrix (size K x N)
+ * @param C Dense matrix (size M x N)
+ * @note
+ * - # of computation: ?
+ * - Multi-threading: false
+ * - GPU acceleration: false
+ */
+void matmul(const matrix::LinearOperator<double> &A,
+            const matrix::Dense<double> &B, matrix::Dense<double> &C);
+void matmul(const matrix::LinearOperator<float> &A,
+            const matrix::Dense<float> &B, matrix::Dense<float> &C);
+
+/**
  * @brief CRS and Dense matrix multiplication: C = AB
  * @param A CRS matrix (size M x K)
  * @param B Dense matrix (size K x N)
@@ -236,5 +246,18 @@ void matmul(const matrix::CRS<double> &A, const matrix::Dense<double> &B,
 void matmul(const matrix::CRS<float> &A, const matrix::Dense<float> &B,
             matrix::Dense<float> &C);
 
-} // namespace blas
-} // namespace monolish
+/**
+ * @brief LinearOperator multiplication: C = A^t B
+ * @param A LinearOperator (size K x M)
+ * @param B Dense matrix (size K x N)
+ * @param C Dense matrix (size M x N)
+ * @note
+ * - # of computation: ?
+ * - Multi-threading: false
+ * - GPU acceleration: false
+ */
+void rmatmul(const matrix::LinearOperator<double> &A,
+             const matrix::Dense<double> &B, matrix::Dense<double> &C);
+void rmatmul(const matrix::LinearOperator<float> &A,
+             const matrix::Dense<float> &B, matrix::Dense<float> &C);
+} // namespace monolish::blas

@@ -1,8 +1,7 @@
 #include "../../../../include/monolish_blas.hpp"
 #include "../../../internal/monolish_internal.hpp"
 
-namespace monolish {
-namespace matrix {
+namespace monolish::matrix {
 
 // div vector
 
@@ -19,7 +18,7 @@ template <typename T> void Dense<T>::diag_div(const vector<T> &vec) {
   assert(Len == vec.size());
 
   if (gpu_status == true) {
-#if MONOLISH_USE_GPU // gpu
+#if MONOLISH_USE_NVIDIA_GPU // gpu
 #pragma omp target teams distribute parallel for
     for (size_t i = 0; i < Len; i++) {
       vald[N * i + i] /= vecd[i];
@@ -54,7 +53,7 @@ template <typename T> void Dense<T>::diag_div(const view1D<vector<T>, T> &vec) {
   assert(Len == vec.size());
 
   if (gpu_status == true) {
-#if MONOLISH_USE_GPU // gpu
+#if MONOLISH_USE_NVIDIA_GPU // gpu
 #pragma omp target teams distribute parallel for
     for (size_t i = 0; i < Len; i++) {
       vald[N * i + i] /= vecd[i];
@@ -90,7 +89,7 @@ void Dense<T>::diag_div(const view1D<matrix::Dense<T>, T> &vec) {
   assert(Len == vec.size());
 
   if (gpu_status == true) {
-#if MONOLISH_USE_GPU // gpu
+#if MONOLISH_USE_NVIDIA_GPU // gpu
 #pragma omp target teams distribute parallel for
     for (size_t i = 0; i < Len; i++) {
       vald[N * i + i] /= vecd[i];
@@ -111,5 +110,4 @@ template void monolish::matrix::Dense<double>::diag_div(
     const view1D<matrix::Dense<double>, double> &vec);
 template void monolish::matrix::Dense<float>::diag_div(
     const view1D<matrix::Dense<float>, float> &vec);
-} // namespace matrix
-} // namespace monolish
+} // namespace monolish::matrix

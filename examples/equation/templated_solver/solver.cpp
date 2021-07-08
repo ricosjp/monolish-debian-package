@@ -13,7 +13,7 @@ void solve() {
   MATRIX A(A_COO); // Create CRS format and convert from COO format
 
   // Length A.row()
-  // Random vector length A.row() with values in the range 1.0 to 2.0
+  // Random vector length A.row() with random values in the range 1.0 to 2.0
   monolish::vector<FLOAT> x(A.get_row(), 1.0, 2.0);
   monolish::vector<FLOAT> b(A.get_row(), 1.0, 2.0);
 
@@ -37,10 +37,12 @@ void solve() {
   // solver.set_rhistory_filename("./a.txt");
 
   // Solve
-  monolish::util::solver_check(solver.solve(A, x, b));
+  if (monolish::util::solver_check(solver.solve(A, x, b))) {
+    return;
+  }
 
   // Recv. from GPU
-  monolish::util::send(x);
+  monolish::util::recv(x);
 
   // output x to standard output
   x.print_all();
@@ -53,7 +55,7 @@ int main() {
   // monolish::util::set_log_filename("./monolish_test_log.txt");
 
   std::cout
-      << "A is Dense, solver is CG, precondition is Jacobi, precision is double"
+      << "A is CRS, solver is CG, precondition is Jacobi, precision is double"
       << std::endl;
   solve<monolish::matrix::CRS<double>,
         monolish::equation::CG<monolish::matrix::CRS<double>, double>,

@@ -16,7 +16,7 @@ int main() {
       A_COO); // Create CRS format and convert from COO format
 
   // Length A.row()
-  // Random vector length A.row() with values in the range 1.0 to 2.0
+  // Random vector length A.row() with random values in the range 1.0 to 2.0
   monolish::vector<double> x(A.get_row(), 1.0, 2.0);
   monolish::vector<double> b(A.get_row(), 1.0, 2.0);
 
@@ -41,7 +41,9 @@ int main() {
   // solver.set_rhistory_filename("./a.txt");
 
   // Solve Ax=b by CG with jacobi
-  monolish::util::solver_check(solver.solve(A, x, b));
+  if (monolish::util::solver_check(solver.solve(A, x, b))) {
+    return 1;
+  }
 
   // Recv x from GPU
   monolish::util::recv(x);

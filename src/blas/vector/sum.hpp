@@ -13,7 +13,7 @@ template <typename F1> double Dsum_core(const F1 &x) {
   const size_t xoffset = x.get_offset();
 
   if (x.get_device_mem_stat() == true) {
-#if MONOLISH_USE_GPU
+#if MONOLISH_USE_NVIDIA_GPU
 #pragma omp target teams distribute parallel for reduction(+ : ans) map (tofrom: ans)
     for (size_t i = 0; i < size; i++) {
       ans += xd[i + xoffset];
@@ -28,6 +28,11 @@ template <typename F1> double Dsum_core(const F1 &x) {
       ans += xd[i + xoffset];
     }
   }
+
+#if MONOLISH_USE_MPI
+  mpi::comm &comm = mpi::comm::get_instance();
+  ans = comm.Allreduce(ans);
+#endif
 
   logger.func_out();
   return ans;
@@ -43,7 +48,7 @@ template <typename F1> float Ssum_core(const F1 &x) {
   const size_t xoffset = x.get_offset();
 
   if (x.get_device_mem_stat() == true) {
-#if MONOLISH_USE_GPU
+#if MONOLISH_USE_NVIDIA_GPU
 #pragma omp target teams distribute parallel for reduction(+ : ans) map (tofrom: ans)
     for (size_t i = 0; i < size; i++) {
       ans += xd[i + xoffset];
@@ -58,6 +63,11 @@ template <typename F1> float Ssum_core(const F1 &x) {
       ans += xd[i + xoffset];
     }
   }
+
+#if MONOLISH_USE_MPI
+  mpi::comm &comm = mpi::comm::get_instance();
+  ans = comm.Allreduce(ans);
+#endif
 
   logger.func_out();
   return ans;
