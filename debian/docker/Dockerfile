@@ -3,9 +3,6 @@ LABEL maintainer "Ryo IGARASHI <rigarash@gmail.com>"
 
 COPY . /monolish
 
-ENV CC /usr/local/llvm-11.0.0/bin/clang 
-ENV CXX /usr/local/llvm-11.0.0/bin/clang++ 
-
 RUN sed -i -e 's%http://[^ ]\+%mirror://mirrors.ubuntu.com/mirrors.txt%g' /etc/apt/sources.list
 RUN apt-get update && apt-get install -y \
     git-buildpackage \ 
@@ -16,6 +13,12 @@ RUN apt-get update && apt-get install -y \
 
 # Build monolish with git-buildpackage
 WORKDIR /monolish
-RUN git clone -b ubuntu/focal/oss https://github.com/rigarash/monolish-debian-package.git \
- && cd monolish-debian-package \
- && gbp buildpackage
+RUN git clone -b ubuntu/focal/oss https://github.com/ricosjp/monolish-debian-package.git
+
+# workaround allgebra bug
+ENV CC=/usr/local/llvm-11.0.1/bin/clang \
+    CXX=/usr/local/llvm-11.0.1/bin/clang++ \
+    LIBRARY_PATH=/usr/local/llvm-11.0.1/lib64:/usr/local/cuda-10.1/lib64:/usr/local/cuda-10.1/lib64/stubs
+
+WORKDIR /monolish/monolish-debian-package
+RUN gbp buildpackage
