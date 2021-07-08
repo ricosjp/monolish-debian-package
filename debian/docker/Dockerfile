@@ -3,9 +3,6 @@ LABEL maintainer "Ryo IGARASHI <rigarash@gmail.com>"
 
 COPY . /monolish
 
-ENV CC /usr/local/llvm-11.0.0/bin/clang 
-ENV CXX /usr/local/llvm-11.0.0/bin/clang++ 
-
 RUN sed -i -e 's%http://[^ ]\+%mirror://mirrors.ubuntu.com/mirrors.txt%g' /etc/apt/sources.list
 RUN apt-get update && apt-get install -y \
     git-buildpackage \ 
