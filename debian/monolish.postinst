@@ -2,14 +2,14 @@
 
 set -e
 
-/usr/bin/allgebra_get_device_cc > /dev/null
+#/usr/bin/allgebra_get_device_cc > /dev/null
 
-if [ $? != 0 ]; then
-  exit 0
-fi
+#if [ $? != 0 ]; then
+#  exit 0
+#fi
 
-cd /usr/lib
-ln -s libmonolish_gpu_$(/usr/bin/allgebra_get_device_cc).so libmonolish_gpu.so
+#cd /usr/lib
+#ln -s libmonolish_gpu_$(/usr/bin/allgebra_get_device_cc).so libmonolish_gpu.so
 
 #DEBHELPER#
 exit 0
