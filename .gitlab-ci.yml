@@ -1,15 +1,16 @@
 variables:
-  MKL_IMAGE: ghcr.io/ricosjp/allgebra/cuda10_1/clang11gcc7/mkl:20.12.2
-  OSS_IMAGE: ghcr.io/ricosjp/allgebra/cuda10_1/clang11gcc7/oss:20.12.2
+  MKL_IMAGE: ghcr.io/ricosjp/allgebra/cuda10_1/clang11gcc7/mkl:21.05.0
+  OSS_IMAGE: ghcr.io/ricosjp/allgebra/cuda10_1/clang11gcc7/oss:21.05.0
 
 before_script:
     - export MONOLISH_DIR="${CI_PROJECT_DIR}/${PREFIX}"
-    - export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${MONOLISH_DIR}/lib
+    - export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${MONOLISH_DIR}/lib:/usr/local/lib/
 
 stages:
     - build_lib
     - test
     - python
+    - examples
     - benchmark
     - deploy
 
@@ -18,10 +19,10 @@ stages:
     variables:
         PREFIX: "gpu_avx"
         TEST_TARGET: "gpu"
-        MONOLISH_USE_GPU: "ON"
+        MONOLISH_USE_NVIDIA_GPU: "ON"
         MONOLISH_USE_AVX: "ON"
-        CC: "/usr/local/llvm-11.0.0/bin/clang"
-        CXX: "/usr/local/llvm-11.0.0/bin/clang++"
+        CC: "/usr/local/llvm-11.0.1/bin/clang"
+        CXX: "/usr/local/llvm-11.0.1/bin/clang++"
     tags:
         - gpu
         - nvidia0-sm_61
@@ -32,10 +33,10 @@ stages:
     variables:
         PREFIX: "gpu_noavx"
         TEST_TARGET: "gpu"
-        MONOLISH_USE_GPU: "ON"
+        MONOLISH_USE_NVIDIA_GPU: "ON"
         MONOLISH_USE_AVX: "OFF"
-        CC: "/usr/local/llvm-11.0.0/bin/clang"
-        CXX: "/usr/local/llvm-11.0.0/bin/clang++"
+        CC: "/usr/local/llvm-11.0.1/bin/clang"
+        CXX: "/usr/local/llvm-11.0.1/bin/clang++"
     tags:
         - gpu
         - nvidia0-sm_61
@@ -46,10 +47,10 @@ stages:
     variables:
         PREFIX: "nogpu_avx"
         TEST_TARGET: "cpu"
-        MONOLISH_USE_GPU: "OFF"
+        MONOLISH_USE_NVIDIA_GPU: "OFF"
         MONOLISH_USE_AVX: "ON"
-        CC: "/usr/local/llvm-11.0.0/bin/clang"
-        CXX: "/usr/local/llvm-11.0.0/bin/clang++"
+        CC: "/usr/local/llvm-11.0.1/bin/clang"
+        CXX: "/usr/local/llvm-11.0.1/bin/clang++"
     tags:
         - avx
     image: ${MKL_IMAGE}
@@ -58,17 +59,17 @@ stages:
     variables:
         PREFIX: "nogpu_noavx"
         TEST_TARGET: "cpu"
-        MONOLISH_USE_GPU: "OFF"
+        MONOLISH_USE_NVIDIA_GPU: "OFF"
         MONOLISH_USE_AVX: "OFF"
-        CC: "/usr/local/llvm-11.0.0/bin/clang"
-        CXX: "/usr/local/llvm-11.0.0/bin/clang++"
+        CC: "/usr/local/llvm-11.0.1/bin/clang"
+        CXX: "/usr/local/llvm-11.0.1/bin/clang++"
     image: ${MKL_IMAGE}
 
 .nogpu_avx_gcc_mkl:
     variables:
         PREFIX: "nogpu_avx"
         TEST_TARGET: "cpu"
-        MONOLISH_USE_GPU: "OFF"
+        MONOLISH_USE_NVIDIA_GPU: "OFF"
         MONOLISH_USE_AVX: "ON"
         CC: "/usr/bin/gcc"
         CXX: "/usr/bin/g++"
@@ -80,7 +81,7 @@ stages:
     variables:
         PREFIX: "nogpu_noavx"
         TEST_TARGET: "cpu"
-        MONOLISH_USE_GPU: "OFF"
+        MONOLISH_USE_NVIDIA_GPU: "OFF"
         MONOLISH_USE_AVX: "OFF"
         CC: "/usr/bin/gcc"
         CXX: "/usr/bin/g++"
@@ -91,10 +92,10 @@ stages:
     variables:
         PREFIX: "nogpu_avx"
         TEST_TARGET: "cpu"
-        MONOLISH_USE_GPU: "OFF"
+        MONOLISH_USE_NVIDIA_GPU: "OFF"
         MONOLISH_USE_AVX: "ON"
-        CC: "/usr/local/llvm-11.0.0/bin/clang"
-        CXX: "/usr/local/llvm-11.0.0/bin/clang++"
+        CC: "/usr/local/llvm-11.0.1/bin/clang"
+        CXX: "/usr/local/llvm-11.0.1/bin/clang++"
     tags:
         - avx
     image: ${OSS_IMAGE}
@@ -103,17 +104,17 @@ stages:
     variables:
         PREFIX: "nogpu_noavx"
         TEST_TARGET: "cpu"
-        MONOLISH_USE_GPU: "OFF"
+        MONOLISH_USE_NVIDIA_GPU: "OFF"
         MONOLISH_USE_AVX: "OFF"
-        CC: "/usr/local/llvm-11.0.0/bin/clang"
-        CXX: "/usr/local/llvm-11.0.0/bin/clang++"
+        CC: "/usr/local/llvm-11.0.1/bin/clang"
+        CXX: "/usr/local/llvm-11.0.1/bin/clang++"
     image: ${OSS_IMAGE}
 
 .nogpu_avx_gcc_oss:
     variables:
         PREFIX: "nogpu_avx"
         TEST_TARGET: "cpu"
-        MONOLISH_USE_GPU: "OFF"
+        MONOLISH_USE_NVIDIA_GPU: "OFF"
         MONOLISH_USE_AVX: "ON"
         CC: "/usr/bin/gcc"
         CXX: "/usr/bin/g++"
@@ -125,7 +126,7 @@ stages:
     variables:
         PREFIX: "nogpu_noavx"
         TEST_TARGET: "cpu"
-        MONOLISH_USE_GPU: "OFF"
+        MONOLISH_USE_NVIDIA_GPU: "OFF"
         MONOLISH_USE_AVX: "OFF"
         CC: "/usr/bin/gcc"
         CXX: "/usr/bin/g++"
@@ -137,7 +138,7 @@ stages:
 .build_cmake:
     stage: build_lib
     script:
-        - cmake -Bbuild . -DMONOLISH_USE_GPU=${MONOLISH_USE_GPU} -DMONOLISH_USE_AVX=${MONOLISH_USE_AVX} -DCMAKE_INSTALL_PREFIX=${MONOLISH_DIR}
+        - cmake -Bbuild . -DMONOLISH_USE_NVIDIA_GPU=${MONOLISH_USE_NVIDIA_GPU} -DMONOLISH_USE_AVX=${MONOLISH_USE_AVX} -DCMAKE_INSTALL_PREFIX=${MONOLISH_DIR}
         - cmake --build build --target install -- -j $(nproc) VERBOSE=1
         - make -C test -j $(nproc) ${TEST_TARGET}
     artifacts:
@@ -189,6 +190,17 @@ nogpu_noavx_gcc_oss_build_cmake:
     extends:
       - .nogpu_noavx_gcc_oss
       - .build_cmake
+
+MPI_build_test:
+  stage: build_lib
+  script:
+    - make install_all
+    - cd test/mpi; make clean; make -j; make run
+  image: ${MKL_IMAGE}
+  tags:
+    - gpu
+    - nvidia0-sm_52
+    - avx
 
 #
 # Test Stage
@@ -347,6 +359,105 @@ python-gpu:
       - make log_gpu
 
 #
+# examples Stage
+#
+.examples:
+  stage: examples
+
+# gpu mkl
+gpu_avx_clang_mkl_examples:
+    extends:
+      - .gpu_avx_clang_mkl
+      - .examples
+    needs:
+      - "gpu_avx_clang_mkl_build_cmake"
+    script:
+      - make -C examples/ gpu
+
+gpu_noavx_clang_mkl_examples:
+    extends:
+      - .gpu_noavx_clang_mkl
+      - .examples
+    needs:
+      - "gpu_noavx_clang_mkl_build_cmake"
+    script:
+      - make -C examples/ gpu
+
+# cpu mkl
+nogpu_avx_gcc_mkl_examples:
+    extends:
+      - .nogpu_avx_gcc_mkl
+      - .examples
+    needs:
+      - "nogpu_avx_gcc_mkl_build_cmake"
+    script:
+      - make -C examples/ cpu
+
+nogpu_noavx_gcc_mkl_examples:
+    extends:
+      - .nogpu_noavx_gcc_mkl
+      - .examples
+    needs:
+      - "nogpu_noavx_gcc_mkl_build_cmake"
+    script:
+      - make -C examples/ cpu
+
+nogpu_avx_clang_mkl_examples:
+    extends:
+      - .nogpu_avx_clang_mkl
+      - .examples
+    needs:
+      - "nogpu_avx_clang_mkl_build_cmake"
+    script:
+      - make -C examples/ cpu
+
+nogpu_noavx_clang_mkl_examples:
+    extends:
+      - .nogpu_noavx_clang_mkl
+      - .examples
+    needs:
+      - "nogpu_noavx_clang_mkl_build_cmake"
+    script:
+      - make -C examples/ cpu
+
+# cpu oss
+nogpu_avx_gcc_oss_examples:
+    extends:
+      - .nogpu_avx_gcc_oss
+      - .examples
+    needs:
+      - "nogpu_avx_gcc_oss_build_cmake"
+    script:
+      - make -C examples/ cpu
+
+nogpu_noavx_gcc_oss_examples:
+    extends:
+      - .nogpu_noavx_gcc_oss
+      - .examples
+    needs:
+      - "nogpu_noavx_gcc_oss_build_cmake"
+    script:
+      - make -C examples/ cpu
+
+nogpu_avx_clang_oss_examples:
+    extends:
+      - .nogpu_avx_clang_oss
+      - .examples
+    needs:
+      - "nogpu_avx_clang_oss_build_cmake"
+    script:
+      - make -C examples/ cpu
+
+nogpu_noavx_clang_oss_examples:
+    extends:
+      - .nogpu_noavx_clang_oss
+      - .examples
+    needs:
+      - "nogpu_noavx_clang_oss_build_cmake"
+    script:
+      - make -C examples/ cpu
+
+#
 # benchmark
 #
 
@@ -438,44 +549,6 @@ amd_avx_gcc_mkl_benchmark:
       - schedules
       - tags
 
-#
-# docker and pages
-#
-docker:
-    # dependencies: require all tests
-    image: docker:latest
-    stage: deploy
-    services:
-        - docker:dind
-    script:
-        - apk add make
-        - make -C docker push
-    tags:
-        - docker
-        - gpu
-    only:
-      - master
-      - tags
-      - web
-
-pages:
-    dependencies:
-      - python-cpu
-      - python-gpu
-    image: ghcr.io/ricosjp/allgebra/doxygen:20.10.1
-    stage: deploy
-    script:
-        - rm -rf public html
-        - doxygen Doxyfile
-        - mv html public
-        - cp -r test/logger/logging/*.html public/
-    artifacts:
-        paths:
-            - public
-        expire_in: 360min
-    only:
-        - master
-
 benchmark_result:
     stage: deploy
     image: ${MKL_IMAGE}
@@ -489,15 +562,26 @@ benchmark_result:
       - schedules
       - tags
 
+monolish_docker:
+    stage: deploy
+    image: docker:latest
+    services:
+        - docker:dind
+    script:
+        - apk add coreutils make
+        - cd docker; make push 
+    only:
+      - master
+
 clang_format:
-    image: ghcr.io/ricosjp/allgebra/clang-format:20.10.1
+    image: ghcr.io/ricosjp/allgebra/clang-format:21.05.0
     stage: build_lib
     script:
-        - check-format.sh
+        - check_format.sh
     allow_failure: true
 
 keep-changelog:
-    image: ghcr.io/ricosjp/allgebra/clang-format:20.10.1
+    image: ghcr.io/ricosjp/allgebra/clang-format:21.05.0
     stage: build_lib
     script:
         - bash -c "! git diff --exit-code origin/master CHANGELOG.md"

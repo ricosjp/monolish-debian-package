@@ -2,16 +2,12 @@
 #pragma once
 
 #include "../common/monolish_common.hpp"
-#if defined USE_MPI
-#include <mpi.h>
-#endif
 
-namespace monolish {
 /**
  * @brief
  * Vector and Matrix element-wise math library
  */
-namespace vml {
+namespace monolish::vml {
 
 /**
  * @brief element by element addition LinearOperator matrix A and
@@ -112,6 +108,4 @@ void div(const matrix::LinearOperator<double> &A, const double &alpha,
          matrix::LinearOperator<double> &C);
 void div(const matrix::LinearOperator<float> &A, const float &alpha,
          matrix::LinearOperator<float> &C);
-
-} // namespace vml
-} // namespace monolish
+} // namespace monolish::vml

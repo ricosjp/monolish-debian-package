@@ -196,7 +196,7 @@ public:
    * - Multi-threading: false
    * - GPU acceleration: false
    **/
-  size_t get_row() const { return rowN; }
+  [[nodiscard]] size_t get_row() const { return rowN; }
 
   /**
    * @brief get # of col
@@ -205,7 +205,7 @@ public:
    * - Multi-threading: false
    * - GPU acceleration: false
    **/
-  size_t get_col() const { return colN; }
+  [[nodiscard]] size_t get_col() const { return colN; }
 
   /**
    * @brief get # of non-zeros
@@ -214,7 +214,7 @@ public:
    * - Multi-threading: false
    * - GPU acceleration: false
    **/
-  size_t get_nnz() const { return get_row() * get_col(); }
+  [[nodiscard]] size_t get_nnz() const { return get_row() * get_col(); }
 
   /**
    * @brief Set row number
@@ -250,7 +250,7 @@ public:
    * - Multi-threading: false
    * - GPU acceleration: false
    **/
-  std::string type() const { return "Dense"; }
+  [[nodiscard]] std::string type() const { return "Dense"; }
 
   /**
    * @brief get transposed matrix (A^T)
@@ -281,7 +281,9 @@ public:
    * - Multi-threading: false
    * - GPU acceleration: false
    **/
-  double get_data_size() const { return get_nnz() * sizeof(Float) / 1.0e+9; }
+  [[nodiscard]] double get_data_size() const {
+    return get_nnz() * sizeof(Float) / 1.0e+9;
+  }
 
   /**
    * @brief get element A[i][j]
@@ -293,7 +295,7 @@ public:
    * - Multi-threading: false
    * - GPU acceleration: false
    **/
-  Float at(const size_t i, const size_t j) const;
+  [[nodiscard]] Float at(const size_t i, const size_t j) const;
 
   /**
    * @brief get element A[i][j] (only CPU)
@@ -305,7 +307,7 @@ public:
    * - Multi-threading: false
    * - GPU acceleration: false
    **/
-  Float at(const size_t i, const size_t j) {
+  [[nodiscard]] Float at(const size_t i, const size_t j) {
     return static_cast<const Dense *>(this)->at(i, j);
   };
 
@@ -374,7 +376,7 @@ public:
    * @brief true: sended, false: not send
    * @return gpu status
    * **/
-  bool get_device_mem_stat() const { return gpu_status; }
+  [[nodiscard]] bool get_device_mem_stat() const { return gpu_status; }
 
   /**
    * @brief destructor of CRS matrix, free GPU memory
@@ -454,6 +456,24 @@ public:
   void operator=(const Dense<Float> &mat);
 
   /**
+   * @brief reference to the pointer of the begining of the m-th row
+   * @param m Position of an pointer in the matrix
+   * @return pointer at the begining of m-th row
+   * @note
+   * - # of computation: 1
+   * - Multi-threading: false
+   * - GPU acceleration: false
+   * @warning
+   * This function is only available for Dense.
+   **/
+  [[nodiscard]] Float *operator[](size_t m) {
+    if (get_device_mem_stat()) {
+      throw std::runtime_error("Error, GPU matrix dense cant use operator[]");
+    }
+    return val.data() + m * get_col();
+  }
+
+  /**
    * @brief Comparing matricies (A == mat)
    * @param mat Dense matrix
    * @param compare_cpu_and_device compare data on both CPU and GPU
@@ -463,8 +483,8 @@ public:
    * - Multi-threading: true
    * - GPU acceleration: true
    **/
-  bool equal(const Dense<Float> &mat,
-             bool compare_cpu_and_device = false) const;
+  [[nodiscard]] bool equal(const Dense<Float> &mat,
+                           bool compare_cpu_and_device = false) const;
 
   /**
    * @brief Comparing matricies (A == mat)
@@ -477,7 +497,7 @@ public:
    *   - if `gpu_status == true`; compare data on GPU
    *   - else; compare data on CPU
    **/
-  bool operator==(const Dense<Float> &mat) const;
+  [[nodiscard]] bool operator==(const Dense<Float> &mat) const;
 
   /**
    * @brief Comparing matricies (A != mat)
@@ -490,7 +510,7 @@ public:
    *   - if `gpu_status == true`; compare data on GPU
    *   - else; compare data on CPU
    **/
-  bool operator!=(const Dense<Float> &mat) const;
+  [[nodiscard]] bool operator!=(const Dense<Float> &mat) const;
 
   /////////////////////////////////////////////
 

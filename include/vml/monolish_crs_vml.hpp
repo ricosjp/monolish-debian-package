@@ -2,16 +2,12 @@
 #pragma once
 
 #include "../common/monolish_common.hpp"
-#if defined USE_MPI
-#include <mpi.h>
-#endif
 
-namespace monolish {
 /**
  * @brief
  * Vector and Matrix element-wise math library
  */
-namespace vml {
+namespace monolish::vml {
 
 /**
  * @brief element by element addition CRS matrix A and
@@ -412,8 +408,8 @@ void min(const matrix::CRS<float> &A, const matrix::CRS<float> &B,
  * @warning
  * A, B, and C must be same non-zero structure
  */
-double max(const matrix::CRS<double> &C);
-float max(const matrix::CRS<float> &C);
+[[nodiscard]] double max(const matrix::CRS<double> &C);
+[[nodiscard]] float max(const matrix::CRS<float> &C);
 
 /**
  * @brief Finds the smallest element in CRS matrix (min(C[0:nnz]))
@@ -426,8 +422,8 @@ float max(const matrix::CRS<float> &C);
  * @warning
  * A, B, and C must be same non-zero structure
  */
-double min(const matrix::CRS<double> &C);
-float min(const matrix::CRS<float> &C);
+[[nodiscard]] double min(const matrix::CRS<double> &C);
+[[nodiscard]] float min(const matrix::CRS<float> &C);
 
 /**
  * @brief reciprocal to CRS matrix elements (C[0:nnz] = 1 / A[0:nnz])
@@ -442,6 +438,4 @@ float min(const matrix::CRS<float> &C);
  */
 void reciprocal(const matrix::CRS<double> &a, matrix::CRS<double> &y);
 void reciprocal(const matrix::CRS<float> &a, matrix::CRS<float> &y);
-
-} // namespace vml
-} // namespace monolish
+} // namespace monolish::vml

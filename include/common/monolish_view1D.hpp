@@ -12,13 +12,19 @@
 #include <fstream>
 #include <iostream>
 #include <iterator>
+#include <memory>
 #include <omp.h>
-#include <random>
 #include <stdexcept>
 #include <string>
 #include <vector>
 
-#include <memory>
+#if USE_SXAT
+#undef _HAS_CPP17
+#endif
+#include <random>
+#if USE_SXAT
+#define _HAS_CPP17 1
+#endif
 
 #if defined USE_MPI
 #include <mpi.h>
@@ -126,7 +132,7 @@ public:
    * @note
    * - # of computation: 1
    **/
-  size_t size() const { return range; }
+  [[nodiscard]] size_t size() const { return range; }
 
   /**
    * @brief get view1D size (same as size())
@@ -134,7 +140,7 @@ public:
    * @note
    * - # of computation: 1
    **/
-  size_t get_nnz() const { return range; }
+  [[nodiscard]] size_t get_nnz() const { return range; }
 
   /**
    * @brief get first position
@@ -142,7 +148,7 @@ public:
    * @note
    * - # of computation: 1
    **/
-  size_t get_first() const { return first; }
+  [[nodiscard]] size_t get_first() const { return first; }
 
   /**
    * @brief get end position
@@ -150,7 +156,7 @@ public:
    * @note
    * - # of computation: 1
    **/
-  size_t get_last() const { return last; }
+  [[nodiscard]] size_t get_last() const { return last; }
 
   /**
    * @brief get first position (same as get_first())
@@ -158,7 +164,7 @@ public:
    * @note
    * - # of computation: 1
    **/
-  size_t get_offset() const { return first; }
+  [[nodiscard]] size_t get_offset() const { return first; }
 
   /**
    * @brief change first position
@@ -185,7 +191,9 @@ public:
    * - Multi-threading: false
    * - GPU acceleration: true
    **/
-  size_t get_device_mem_stat() const { return target.get_device_mem_stat(); }
+  [[nodiscard]] size_t get_device_mem_stat() const {
+    return target.get_device_mem_stat();
+  }
 
   /**
    * @brief returns a direct pointer to the original vector (dont include
@@ -194,7 +202,7 @@ public:
    * @note
    * - # of computation: 1
    **/
-  Float *data() const { return target_data; }
+  [[nodiscard]] Float *data() const { return target_data; }
 
   /**
    * @brief returns a direct pointer to the vector (dont include offset)
@@ -202,7 +210,7 @@ public:
    * @note
    * - # of computation: 1
    **/
-  Float *data() { return target_data; }
+  [[nodiscard]] Float *data() { return target_data; }
 
   /**
    * @brief returns begin iterator (include offset)
@@ -210,7 +218,7 @@ public:
    * @note
    * - # of computation: 1
    **/
-  Float *begin() const { return target_data + get_offset(); }
+  [[nodiscard]] Float *begin() const { return target_data + get_offset(); }
 
   /**
    * @brief returns begin iterator (include offset)
@@ -218,7 +226,7 @@ public:
    * @note
    * - # of computation: 1
    **/
-  Float *begin() { return target_data + get_offset(); }
+  [[nodiscard]] Float *begin() { return target_data + get_offset(); }
 
   /**
    * @brief returns a end iterator
@@ -226,7 +234,7 @@ public:
    * @note
    * - # of computation: 1
    **/
-  Float *end() const { return target_data + range; }
+  [[nodiscard]] Float *end() const { return target_data + range; }
 
   /**
    * @brief returns a end iterator
@@ -234,7 +242,7 @@ public:
    * @note
    * - # of computation: 1
    **/
-  Float *end() { return target_data + range; }
+  [[nodiscard]] Float *end() { return target_data + range; }
 
   /**
    * @brief print all elements to standart I/O
@@ -262,7 +270,7 @@ public:
   }
 
   /**
-   * @brief refetrence to the element at position
+   * @brief reference to the element at position
    * @param i Position of an element in the vector
    * @return vector element (v[i])
    * @note
@@ -270,7 +278,7 @@ public:
    * - Multi-threading: false
    * - GPU acceleration: false
    **/
-  Float &operator[](const size_t i) {
+  [[nodiscard]] Float &operator[](const size_t i) {
     if (target.get_device_mem_stat()) {
       throw std::runtime_error("Error, GPU vector cant use operator[]");
     }

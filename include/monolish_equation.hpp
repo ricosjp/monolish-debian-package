@@ -1,16 +1,16 @@
 #pragma once
 #include <vector>
 
-#if defined USE_MPI
-#include <mpi.h>
-#endif
-
 #include "./monolish_solver.hpp"
 #include "common/monolish_common.hpp"
 #include <functional>
 
-namespace monolish {
-namespace equation {
+/**
+ * @brief
+ * Linear equation solvers for Dense and sparse matrix
+ * Scalar
+ */
+namespace monolish::equation {
 
 /**
  * @brief none solver class(nothing to do)
@@ -347,5 +347,4 @@ public:
    **/
   std::string name() const { return "monolish::equation::Cholesky"; }
 };
-} // namespace equation
-} // namespace monolish
+} // namespace monolish::equation
