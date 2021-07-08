@@ -1,4 +1,13 @@
-monolish (0.14.0-1+oss) UNRELEASED; urgency=medium
+monolish (0.14.1-1+oss) UNRELEASED; urgency=medium
+
+  [ Ryo IGARASHI ]
+  * Add sleep 2 to wait before docker cp.
+  * monolish-debian-package is under ricosjp organization at last.
+  * Update deb file location.
+
+ -- Ryo IGARASHI <rigarash@ricos.co.jp>  Thu, 08 Jul 2021 15:07:19 +0900
+
+monolish (0.14.0-1+oss) focal; urgency=medium
 
   [ Ryo IGARASHI ]
   * Initial release. 
