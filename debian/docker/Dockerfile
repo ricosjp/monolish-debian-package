@@ -19,7 +19,8 @@ RUN git clone -b 'ubuntu/focal/mkl+nvidia' https://github.com/rigarash/monolish-
 
 # workaround allgebra bug
 ENV CC=/usr/local/llvm-11.0.1/bin/clang \
-    CXX=/usr/local/llvm-11.0.1/bin/clang++
+    CXX=/usr/local/llvm-11.0.1/bin/clang++ \
+    LIBRARY_PATH=/usr/local/llvm-11.0.1/lib64:/usr/local/cuda-10.1/lib64:/usr/local/cuda-10.1/lib64/stubs
 
 WORKDIR /monolish/monolish-debian-package
 RUN gbp buildpackage
