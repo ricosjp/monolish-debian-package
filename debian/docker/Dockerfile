@@ -15,7 +15,7 @@ RUN ln -s /usr/local/cuda-10.1/lib64/stubs/libcuda.so /usr/local/cuda-10.1/lib64
 
 # Build monolish with git-buildpackage
 WORKDIR /monolish
-RUN git clone -b 'ubuntu/focal/mkl+nvidia' https://github.com/rigarash/monolish-debian-package.git
+RUN git clone -b 'ubuntu/focal/mkl+nvidia' https://github.com/ricosjp/monolish-debian-package.git
 
 # workaround allgebra bug
 ENV CC=/usr/local/llvm-11.0.1/bin/clang \
