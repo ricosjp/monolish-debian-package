@@ -1,20 +1,25 @@
+MONOLISH_DIR?=$(HOME)/lib/monolish
+LIBS=-I $(MONOLISH_DIR)/include/ -L$(MONOLISH_DIR)/lib/
+
 CXX=g++
 CXXFLAGS=-O3
 
 all: cpu gpu
 
-cpu: lobpcg_cpu.out
-gpu: lobpcg_gpu.out
+cpu: lobpcg_cpu.out run_cpu
+gpu: lobpcg_gpu.out run_gpu
 	
 lobpcg_cpu.out: lobpcg.cpp
-	$(CXX) $(CXXFLAGS) lobpcg.cpp -o $@  -lmonolish_cpu
+	$(CXX) $(CXXFLAGS) $< -o $@ $(LIBS) -lmonolish_cpu
 
 lobpcg_gpu.out: lobpcg.cpp
-	$(CXX) $(CXXFLAGS) lobpcg.cpp -o $@  -lmonolish_gpu
+	$(CXX) $(CXXFLAGS) $< -o $@ $(LIBS) -lmonolish_gpu 
 
-run:
+run_cpu:
 	echo "run CPU"
 	./lobpcg_cpu.out
+
+run_gpu:
 	echo "run GPU"
 	./lobpcg_gpu.out
 

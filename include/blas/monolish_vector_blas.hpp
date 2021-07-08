@@ -2,17 +2,12 @@
 #pragma once
 #include "../common/monolish_common.hpp"
 
-#if defined USE_MPI
-#include <mpi.h>
-#endif
-
-namespace monolish {
 /**
  * @brief
  * Basic Linear Algebra Subprograms for Dense Matrix, Sparse Matrix, Vector and
  * Scalar
  */
-namespace blas {
+namespace monolish::blas {
 
 /**
  * @brief element by element addition of vector a and vector b.
@@ -356,12 +351,12 @@ void asum(const view1D<matrix::Dense<float>, float> &x, float &ans);
  * - GPU acceleration: true
  *    - # of data transfer: 0
  */
-double asum(const vector<double> &x);
-double asum(const view1D<vector<double>, double> &x);
-double asum(const view1D<matrix::Dense<double>, double> &x);
-float asum(const vector<float> &x);
-float asum(const view1D<vector<float>, float> &x);
-float asum(const view1D<matrix::Dense<float>, float> &x);
+[[nodiscard]] double asum(const vector<double> &x);
+[[nodiscard]] double asum(const view1D<vector<double>, double> &x);
+[[nodiscard]] double asum(const view1D<matrix::Dense<double>, double> &x);
+[[nodiscard]] float asum(const vector<float> &x);
+[[nodiscard]] float asum(const view1D<vector<float>, float> &x);
+[[nodiscard]] float asum(const view1D<matrix::Dense<float>, float> &x);
 
 /**
  * @brief vector\<float\> sum
@@ -390,12 +385,12 @@ void sum(const view1D<matrix::Dense<float>, float> &x, float &ans);
  * - GPU acceleration: true
  *    - # of data transfer: 0
  */
-double sum(const vector<double> &x);
-double sum(const view1D<vector<double>, double> &x);
-double sum(const view1D<matrix::Dense<double>, double> &x);
-float sum(const vector<float> &x);
-float sum(const view1D<vector<float>, float> &x);
-float sum(const view1D<matrix::Dense<float>, float> &x);
+[[nodiscard]] double sum(const vector<double> &x);
+[[nodiscard]] double sum(const view1D<vector<double>, double> &x);
+[[nodiscard]] double sum(const view1D<matrix::Dense<double>, double> &x);
+[[nodiscard]] float sum(const vector<float> &x);
+[[nodiscard]] float sum(const view1D<vector<float>, float> &x);
+[[nodiscard]] float sum(const view1D<matrix::Dense<float>, float> &x);
 
 /**
  * @brief axpy: y = ax + y
@@ -403,7 +398,7 @@ float sum(const view1D<matrix::Dense<float>, float> &x);
  * @param x monolish vector\<float\> (size N)
  * @param y monolish vector\<float\> (size N)
  * @note
- * - # of computation: N
+ * - # of computation: 2N
  * - Multi-threading: true
  * - GPU acceleration: true
  *    - # of data transfer: 0
@@ -645,34 +640,40 @@ void dot(const view1D<matrix::Dense<float>, float> &x,
  * - GPU acceleration: true
  *    - # of data transfer: 0
  */
-double dot(const vector<double> &x, const vector<double> &y);
-double dot(const vector<double> &x, const view1D<vector<double>, double> &y);
-double dot(const vector<double> &x,
-           const view1D<matrix::Dense<double>, double> &y);
-double dot(const view1D<vector<double>, double> &x, const vector<double> &y);
-double dot(const view1D<vector<double>, double> &x,
-           const view1D<vector<double>, double> &y);
-double dot(const view1D<vector<double>, double> &x,
-           const view1D<matrix::Dense<double>, double> &y);
-double dot(const view1D<matrix::Dense<double>, double> &x,
-           const vector<double> &y);
-double dot(const view1D<matrix::Dense<double>, double> &x,
-           const view1D<vector<double>, double> &y);
-double dot(const view1D<matrix::Dense<double>, double> &x,
-           const view1D<matrix::Dense<double>, double> &y);
-float dot(const vector<float> &x, const vector<float> &y);
-float dot(const vector<float> &x, const view1D<vector<float>, float> &y);
-float dot(const vector<float> &x, const view1D<matrix::Dense<float>, float> &y);
-float dot(const view1D<vector<float>, float> &x, const vector<float> &y);
-float dot(const view1D<vector<float>, float> &x,
-          const view1D<vector<float>, float> &y);
-float dot(const view1D<vector<float>, float> &x,
-          const view1D<matrix::Dense<float>, float> &y);
-float dot(const view1D<matrix::Dense<float>, float> &x, const vector<float> &y);
-float dot(const view1D<matrix::Dense<float>, float> &x,
-          const view1D<vector<float>, float> &y);
-float dot(const view1D<matrix::Dense<float>, float> &x,
-          const view1D<matrix::Dense<float>, float> &y);
+[[nodiscard]] double dot(const vector<double> &x, const vector<double> &y);
+[[nodiscard]] double dot(const vector<double> &x,
+                         const view1D<vector<double>, double> &y);
+[[nodiscard]] double dot(const vector<double> &x,
+                         const view1D<matrix::Dense<double>, double> &y);
+[[nodiscard]] double dot(const view1D<vector<double>, double> &x,
+                         const vector<double> &y);
+[[nodiscard]] double dot(const view1D<vector<double>, double> &x,
+                         const view1D<vector<double>, double> &y);
+[[nodiscard]] double dot(const view1D<vector<double>, double> &x,
+                         const view1D<matrix::Dense<double>, double> &y);
+[[nodiscard]] double dot(const view1D<matrix::Dense<double>, double> &x,
+                         const vector<double> &y);
+[[nodiscard]] double dot(const view1D<matrix::Dense<double>, double> &x,
+                         const view1D<vector<double>, double> &y);
+[[nodiscard]] double dot(const view1D<matrix::Dense<double>, double> &x,
+                         const view1D<matrix::Dense<double>, double> &y);
+[[nodiscard]] float dot(const vector<float> &x, const vector<float> &y);
+[[nodiscard]] float dot(const vector<float> &x,
+                        const view1D<vector<float>, float> &y);
+[[nodiscard]] float dot(const vector<float> &x,
+                        const view1D<matrix::Dense<float>, float> &y);
+[[nodiscard]] float dot(const view1D<vector<float>, float> &x,
+                        const vector<float> &y);
+[[nodiscard]] float dot(const view1D<vector<float>, float> &x,
+                        const view1D<vector<float>, float> &y);
+[[nodiscard]] float dot(const view1D<vector<float>, float> &x,
+                        const view1D<matrix::Dense<float>, float> &y);
+[[nodiscard]] float dot(const view1D<matrix::Dense<float>, float> &x,
+                        const vector<float> &y);
+[[nodiscard]] float dot(const view1D<matrix::Dense<float>, float> &x,
+                        const view1D<vector<float>, float> &y);
+[[nodiscard]] float dot(const view1D<matrix::Dense<float>, float> &x,
+                        const view1D<matrix::Dense<float>, float> &y);
 
 /**
  * @brief nrm1: sum(abs(x[0:N]))
@@ -696,17 +697,17 @@ void nrm1(const view1D<matrix::Dense<float>, float> &x, float &ans);
  * @param x monolish vector\<float\> (size N)
  * @param ans The result of the nrm1
  * @note
- * - # of computation: N
+ * - # of computation: 2N
  * - Multi-threading: true
  * - GPU acceleration: true
  *    - # of data transfer: 0
  */
-double nrm1(const vector<double> &x);
-double nrm1(const view1D<vector<double>, double> &x);
-double nrm1(const view1D<matrix::Dense<double>, double> &x);
-float nrm1(const vector<float> &x);
-float nrm1(const view1D<vector<float>, float> &x);
-float nrm1(const view1D<matrix::Dense<float>, float> &x);
+[[nodiscard]] double nrm1(const vector<double> &x);
+[[nodiscard]] double nrm1(const view1D<vector<double>, double> &x);
+[[nodiscard]] double nrm1(const view1D<matrix::Dense<double>, double> &x);
+[[nodiscard]] float nrm1(const vector<float> &x);
+[[nodiscard]] float nrm1(const view1D<vector<float>, float> &x);
+[[nodiscard]] float nrm1(const view1D<matrix::Dense<float>, float> &x);
 
 /**
  * @brief nrm2: ||x||_2
@@ -735,12 +736,12 @@ void nrm2(const view1D<matrix::Dense<float>, float> &x, float &ans);
  * - GPU acceleration: true
  *    - # of data transfer: 0
  */
-double nrm2(const vector<double> &x);
-double nrm2(const view1D<vector<double>, double> &x);
-double nrm2(const view1D<matrix::Dense<double>, double> &x);
-float nrm2(const vector<float> &x);
-float nrm2(const view1D<vector<float>, float> &x);
-float nrm2(const view1D<matrix::Dense<float>, float> &x);
+[[nodiscard]] double nrm2(const vector<double> &x);
+[[nodiscard]] double nrm2(const view1D<vector<double>, double> &x);
+[[nodiscard]] double nrm2(const view1D<matrix::Dense<double>, double> &x);
+[[nodiscard]] float nrm2(const vector<float> &x);
+[[nodiscard]] float nrm2(const view1D<vector<float>, float> &x);
+[[nodiscard]] float nrm2(const view1D<matrix::Dense<float>, float> &x);
 
 /**
  * @brief scal: x = alpha * x
@@ -804,6 +805,4 @@ void xpay(const float alpha, const view1D<matrix::Dense<float>, float> &x,
           view1D<vector<float>, float> &y);
 void xpay(const float alpha, const view1D<matrix::Dense<float>, float> &x,
           view1D<matrix::Dense<float>, float> &y);
-
-} // namespace blas
-} // namespace monolish
+} // namespace monolish::blas

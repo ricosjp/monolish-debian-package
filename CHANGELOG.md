@@ -21,6 +21,79 @@ https://keepachangelog.com/ja/1.0.0/ に基づいて記述していく
 Unreleased
 -----------
 
+0.14.1 - 2021/07/08
+-----------
+### Added
+- add gitlab-CI test of examples/ https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/341
+- add only_cpu sample code https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/340
+- build monolish container latest in gitlab-CI https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/336
+- add CG, LU Benchmarks https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/333 https://github.com/ricosjp/monolish/issues/63
+- add benchmark/ to monolish container https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/327 https://github.com/ricosjp/monolish/issues/61
+- support NEC nlc lapack for SXAT https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/323
+- add matmul function for LinearOperator https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/322
+- add operator [] for matrix::Dense https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/320
+- add C++17 nodiscard attribute https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/318 https://github.com/ricosjp/monolish/issues/58
+- add monolish::blas::sum test https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/317
+- add jacobi preconditioner test https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/311
+- add diag and Jacobi of LinearOperator https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/309
+- add Specifing GPU ID I/F https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/307
+- add testing and benchmarking document https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/305
+- add create laplacian 2D 5point https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/304
+- add cg/bicgstab test of equation in linearoerator https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/303
+- add monolish container https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/301
+- add build monolish_cpu on the local (and fix typo) https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/300
+- add contribution approval flow https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/299
+
+### Added, Fixed, Changed (MPI trial implementation)
+- fix test bug  https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/342
+- change I/F of MPI non-blocking communication Isend/Irecv https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/332
+- delete gpu_sync flag https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/331
+- add MPI non-blocking communication Send/Recv https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/330
+- delete unnecessary val https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/329
+- change MPI::Comm --> MPI::comm https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/329
+- add MPI blocking communication Send/Recv https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/328
+- add MPI Bcast, Gather, Scatter https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/325
+- add MPI Barrier https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/318
+- add MPI gen scripts https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/318
+- add MPI sum(), asum(), nrm1(), nrm2() https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/317 https://github.com/ricosjp/monolish/issues/56
+- add MPI monolish::blas::dot() https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/312
+- add get_rank(), get_size(), Allreduce() in monolish::mpi https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/312
+- add make install_mpi and make install_all https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/310
+- add monolish::mpi test in test/mpi https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/310
+- add monolish::mpi::Comm class https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/310
+- add MPI build test in gitlab-CI (beta) https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/306
+- add build option `MONOLISH_USE_MPI` (beta) https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/306
+
+### Fixed
+- fix examples reference bug fix and clean makefile https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/339
+- change LU benchmark size https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/324
+- fix filename typo internal/*/interger.cpp --> integer.cpp https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/323
+- avoid SXAT c++17 std::random bug https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/323
+- test check_ans() bug fix https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/316
+- test check_ans() bug fix https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/316
+- LinearOperator diag() bug https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/313
+- generate documents for each tag (at github-actions, this work was done on master)
+- Fix clang CPU build script bug https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/306
+
+### Changed
+- change build flag MONOLISH_USE_GPU --> MONOLISH_USE_NVIDIA_GPU https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/342 https://github.com/ricosjp/monolish/issues/62
+- add include sample code in doxygben https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/340
+- update monolish docker document https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/337
+- update monolish-log-viewer 0.1.1 https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/335 https://github.com/ricosjp/monolish/issues/59
+- support stop fcc trad mode, and support fcc clang mode https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/324
+- change C++17 simplified nested namespaces (namespace::namespace) https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/321 https://github.com/ricosjp/monolish/issues/60
+- change nrm2 --> dot() and sqrt for MPI https://github.com/ricosjp/monolish/issues/57 https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/316
+- change C++ version C++14 --> C++17 https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/315
+- Use absolute tolerance when answer close to 0. https://github.com/ricosjp/monolish/issues/53 https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/314
+- update clang 11.0.0 --> 11.0.1 https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/308
+- update allgebra 20.12.02-->21.05.0 https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/308
+- organize doc/ https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/305
+- update solverlist for linearoerator https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/303
+- Fix update logger author https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/302
+
+### Removed
+- del generate monolish container and doxygen at gitlab CI https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/301
+
 0.14.0 - 2021/04/05
 -----------
 ### Added
@@ -81,7 +154,7 @@ Unreleased
 - do not test Frank matrix with LOBPCG since nonreliable https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/266
 - update operation list for doxygen https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/263
 
-### Deprecated
+### Removed
 - delete return vector getvec function https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/267
 - delete row/col vector arithmetics in Dense https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/264
 
@@ -108,7 +181,7 @@ Unreleased
 - fix view1D VML offset bug https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/260
 - fix to allow nvprof in docker https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/256
 
-### Deprecated
+### Removed
 - delete std::vector row(), col(), diag() https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/259
 - delete gpu cholesky https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/253
 
@@ -146,7 +219,7 @@ Unreleased
 - fix error check doxygen comment https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/232
 - fix LOBPCG fail with sygvd() https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/225
 
-### Deprecated
+### Removed
 - delete LinearOperator.copy https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/229
 
 0.11.0 - 2021/01/23
@@ -231,7 +304,7 @@ Unreleased
 - fix LOBPCG iteration logic https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/195
 - fix sxat, a64fx makefile bugs https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/181
 
-### Deprecated
+### Removed
 - delete vector.copy() https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/202
 - delete Dense.copy() https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/202
 - delete CRS.copy() https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/202

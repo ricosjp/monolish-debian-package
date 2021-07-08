@@ -10,22 +10,39 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # Fortran is needed when using find_package(BLAS)
 project(monolish CXX Fortran)
 
-option(MONOLISH_USE_GPU "build GPU variant" OFF)
+option(MONOLISH_USE_NVIDIA_GPU "build NVIDIA GPU variant" OFF)
+option(MONOLISH_USE_MPI "build MPI variant" OFF)
 option(MONOLISH_USE_AVX "Require AVX" ON)
 option(MONOLISH_FOR_PACKAGING "build for packaging" OFF)
 
-if(MONOLISH_USE_GPU)
-  if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    if (MONOLISH_FOR_PACKAGING)
-      set(MONOLISH_TARGET monolish_gpu_${GPU_CC})
-    else()
-      set(MONOLISH_TARGET monolish_gpu)
+if(MONOLISH_USE_MPI)
+  if(MONOLISH_USE_NVIDIA_GPU)
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+      if (MONOLISH_FOR_PACKAGING)
+        set(MONOLISH_TARGET monolish_gpu_mpi_${GPU_CC})
+      else()
+        set(MONOLISH_TARGET monolish_gpu_mpi)
+      endif()
+    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+      message(FATAL_ERROR "GPU mode cannot be enabled with gcc")
     endif()
-  elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    message(FATAL_ERROR "GPU mode cannot be enabled with gcc")
+  else()
+    set(MONOLISH_TARGET monolish_cpu_mpi)
   endif()
 else()
-  set(MONOLISH_TARGET monolish_cpu)
+  if(MONOLISH_USE_NVIDIA_GPU)
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+      if (MONOLISH_FOR_PACKAGING)
+        set(MONOLISH_TARGET monolish_gpu_${GPU_CC})
+      else()
+        set(MONOLISH_TARGET monolish_gpu)
+      endif()
+    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+      message(FATAL_ERROR "GPU mode cannot be enabled with gcc")
+    endif()
+  else()
+    set(MONOLISH_TARGET monolish_cpu)
+  endif()
 endif()
 
 file(GLOB_RECURSE MONOLISH_SOURCE_FILES
@@ -40,13 +57,24 @@ target_sources(${MONOLISH_TARGET}
   ${MONOLISH_SOURCE_FILES}
 )
 
-set_property(TARGET ${MONOLISH_TARGET} PROPERTY CXX_STANDARD 14)
+set_property(TARGET ${MONOLISH_TARGET} PROPERTY CXX_STANDARD 17)
 target_compile_options(${MONOLISH_TARGET} PRIVATE -g -O3 -Wall)
+
+install(
+  TARGETS ${MONOLISH_TARGET}
+  LIBRARY
+  DESTINATION lib
+)
 
 # AVX
 if(MONOLISH_USE_AVX)
   target_compile_options(${MONOLISH_TARGET} PRIVATE "-mavx")
   target_compile_definitions(${MONOLISH_TARGET} PRIVATE MONOLISH_USE_AVX)
+endif()
+
+# MPI
+if(MONOLISH_USE_MPI)
+  target_compile_definitions(${MONOLISH_TARGET} PRIVATE MONOLISH_USE_MPI)
 endif()
 
 install(
@@ -57,7 +85,7 @@ install(
 
 # OpenMP
 find_package(OpenMP REQUIRED)
-if(MONOLISH_USE_GPU)
+if(MONOLISH_USE_NVIDIA_GPU)
   # GPU offloading
 
   if (NOT MONOLISH_FOR_PACKAGING)
@@ -119,8 +147,8 @@ else()
   endif()
 endif()
 
-if(MONOLISH_USE_GPU)
-  target_compile_definitions(${MONOLISH_TARGET} PRIVATE MONOLISH_USE_GPU)
+if(MONOLISH_USE_NVIDIA_GPU)
+  target_compile_definitions(${MONOLISH_TARGET} PRIVATE MONOLISH_USE_NVIDIA_GPU)
   # Link CUDA libraries
   find_package(CUDAToolkit REQUIRED)
   target_link_libraries(${MONOLISH_TARGET}
