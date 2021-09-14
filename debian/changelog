@@ -1,10 +1,8 @@
 monolish (0.14.2-1+oss) UNRELEASED; urgency=medium
 
   [ Ryo IGARASHI ]
+  * New upstream release.
   * Comment out postinst; there is no get_device_cc script in CPU variant.
-
-  [ root ]
-  * UNRELEASED
 
  -- Toshiaki Hishinuma <hishinuma@ricos.co.jp>  Tue, 14 Sep 2021 18:44:41 +0900
 
