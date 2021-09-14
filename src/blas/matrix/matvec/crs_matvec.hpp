@@ -54,12 +54,21 @@ void Dmatvec_core(const matrix::CRS<double> &A, const VEC1 &x, VEC2 &y) {
   } else {
     // MKL
 #if MONOLISH_USE_MKL
-    const int m = A.get_row();
-    const int n = A.get_col();
+    int m = A.get_row();
+    int n = A.get_col();
     const double alpha = 1.0;
     const double beta = 0.0;
-    mkl_dcsrmv("N", &m, &n, &alpha, "G__C", vald, cold, rowd, rowd + 1,
-               xd + xoffset, &beta, yd + yoffset);
+
+    sparse_matrix_t mklA;
+    struct matrix_descr descrA;
+    descrA.type = SPARSE_MATRIX_TYPE_GENERAL;
+
+    mkl_sparse_d_create_csr(&mklA, SPARSE_INDEX_BASE_ZERO, m, n, (int *)rowd,
+                            (int *)rowd + 1, (int *)cold, (double *)vald);
+    // mkl_sparse_set_mv_hint (mklA, SPARSE_OPERATION_NON_TRANSPOSE, descrA,
+    // 100); // We haven't seen any performance improvement by using hint.
+    mkl_sparse_d_mv(SPARSE_OPERATION_NON_TRANSPOSE, alpha, mklA, descrA,
+                    xd + xoffset, beta, yd + yoffset);
 
     // OSS
 #else
@@ -132,8 +141,17 @@ void Smatvec_core(const matrix::CRS<float> &A, const VEC1 &x, VEC2 &y) {
     const int n = A.get_col();
     const float alpha = 1.0;
     const float beta = 0.0;
-    mkl_scsrmv("N", &m, &n, &alpha, "G__C", vald, cold, rowd, rowd + 1,
-               xd + xoffset, &beta, yd + yoffset);
+
+    sparse_matrix_t mklA;
+    struct matrix_descr descrA;
+    descrA.type = SPARSE_MATRIX_TYPE_GENERAL;
+
+    mkl_sparse_s_create_csr(&mklA, SPARSE_INDEX_BASE_ZERO, m, n, (int *)rowd,
+                            (int *)rowd + 1, (int *)cold, (float *)vald);
+    // mkl_sparse_set_mv_hint (mklA, SPARSE_OPERATION_NON_TRANSPOSE, descrA,
+    // 100); // We haven't seen any performance improvement by using hint.
+    mkl_sparse_s_mv(SPARSE_OPERATION_NON_TRANSPOSE, alpha, mklA, descrA,
+                    xd + xoffset, beta, yd + yoffset);
 
     // OSS
 #else

@@ -1,4 +1,4 @@
-FROM ghcr.io/ricosjp/allgebra/cuda10_1/clang11gcc7/mkl:21.05.0
+FROM ghcr.io/ricosjp/allgebra/cuda10_1/clang12/mkl:21.06.1
 
 ENV DEBIAN_FRONTEND=noninteractive
 COPY ./monolish_examples/ /opt/monolish/examples/
@@ -10,6 +10,6 @@ RUN apt-get update -y \
  pip3 install monolish-log-viewer==0.1.1
 
 # install libmonolish_cpu.so
-RUN wget https://github.com/ricosjp/monolish/releases/download/0.14.0/monolish_0.14.0-1+mkl_amd64.deb \
- && apt install -y ./monolish_0.14.0-1+mkl_amd64.deb \
- && rm ./monolish_0.14.0-1+mkl_amd64.deb
+RUN wget https://github.com/ricosjp/monolish/releases/download/0.14.2/monolish_0.14.2-1+mkl_amd64.deb \
+ && apt install -y ./monolish_0.14.2-1+mkl_amd64.deb \
+ && rm ./monolish_0.14.2-1+mkl_amd64.deb
