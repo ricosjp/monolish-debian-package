@@ -1,4 +1,12 @@
-monolish (0.14.1-1+mkl) UNRELEASED; urgency=medium
+monolish (0.14.2-1+mkl) UNRELEASED; urgency=medium
+
+  [ Ryo IGARASHI ]
+  * New upstream release.
+  * Comment out postinst; there is no get_device_cc script in CPU variant.
+
+ -- Toshiaki Hishinuma <hishinuma@ricos.co.jp>  Tue, 14 Sep 2021 19:18:40 +0900
+
+monolish (0.14.1-1+mkl) focal; urgency=medium
 
   [ Ryo IGARASHI ]
   * Change branch name in gbp.conf as well.
