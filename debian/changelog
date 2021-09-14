@@ -1,4 +1,13 @@
-monolish (0.14.1-1+oss+nvidia) UNRELEASED; urgency=medium
+monolish (0.14.2-1+oss+nvidia) UNRELEASED; urgency=medium
+
+  [ Ryo IGARASHI ]
+  * New upstream release.
+  * Remove llvm version patch; applied upstream.
+  * Remove set -e switch for now.
+
+ -- Toshiaki Hishinuma <hishinuma@ricos.co.jp>  Tue, 14 Sep 2021 19:37:50 +0900
+
+monolish (0.14.1-1+oss+nvidia) focal; urgency=medium
 
   [ Ryo IGARASHI ]
   * Fix to build with CMD
