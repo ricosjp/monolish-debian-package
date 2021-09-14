@@ -1,6 +1,13 @@
 monolish (0.14.1-1+oss) UNRELEASED; urgency=medium
 
   [ Ryo IGARASHI ]
+  * Comment out postinst; there is no get_device_cc script in CPU variant.
+
+ -- root <root@061340f39288>  Tue, 14 Sep 2021 18:01:23 +0900
+
+monolish (0.14.1-1+oss) focal; urgency=medium
+
+  [ Ryo IGARASHI ]
   * Add sleep 2 to wait before docker cp.
   * monolish-debian-package is under ricosjp organization at last.
   * Update deb file location.
