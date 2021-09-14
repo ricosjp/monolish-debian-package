@@ -21,6 +21,30 @@ https://keepachangelog.com/ja/1.0.0/ に基づいて記述していく
 Unreleased
 -----------
 
+0.14.2 - 2021/09/14
+-----------
+### Added
+- add publications in doxygen https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/346
+
+### Added, Fixed, Changed (MPI trial implementation)
+
+### Fixed
+- fix OpenMP random bug in Dense and vector constructor https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/350 https://github.com/ricosjp/monolish/issues/70
+- fix typo random_stracture.cpp -> random_structure.cpp  https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/349 https://github.com/ricosjp/monolish/issues/71
+- fix deprecated MKL SpMV  https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/344 https://github.com/ricosjp/monolish/issues/65
+- delete unnecessary device free https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/344
+- delete gpu matrix transpose test https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/344
+
+### Changed
+- OpenMP parallelization for util::random_vector https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/350 https://github.com/ricosjp/monolish/issues/70
+- update clang 11.0.0 --> 12.0.0 https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/344 https://github.com/ricosjp/monolish/issues/64
+- update allgebra 20.05.0--> 21.06.1 https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/344 https://github.com/ricosjp/monolish/issues/64
+- change std::copy --> internal::vcopy in transpose() https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/344
+
+### Fixed
+- Specify poetry version 1.1.7 https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/345
+- stop MPI test (see https://github.com/ricosjp/monolish/issues/67) https://gitlab.ritc.jp/ricos/monolish/-/merge_requests/345
+
 0.14.1 - 2021/07/08
 -----------
 ### Added
