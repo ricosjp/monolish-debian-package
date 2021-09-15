@@ -1,4 +1,4 @@
-FROM ghcr.io/ricosjp/allgebra/cuda10_1/clang11gcc7/oss:21.05.0
+FROM ghcr.io/ricosjp/allgebra/cuda10_1/clang12/oss:21.06.1
 LABEL maintainer "Ryo IGARASHI <rigarash@gmail.com>"
 
 COPY . /monolish
@@ -18,9 +18,9 @@ WORKDIR /monolish
 RUN git clone -b 'ubuntu/focal/oss+nvidia' https://github.com/ricosjp/monolish-debian-package.git
 
 # workaround allgebra bug
-ENV CC=/usr/local/llvm-11.0.1/bin/clang \
-    CXX=/usr/local/llvm-11.0.1/bin/clang++ \
-    LIBRARY_PATH=/usr/local/llvm-11.0.1/lib64:/usr/local/cuda-10.1/lib64:/usr/local/cuda-10.1/lib64/stubs
+ENV CC=/usr/local/llvm-12.0.0/bin/clang \
+    CXX=/usr/local/llvm-12.0.0/bin/clang++ \
+    LIBRARY_PATH=/usr/local/llvm-12.0.0/lib64:/usr/local/cuda-10.1/lib64:/usr/local/cuda-10.1/lib64/stubs
 
 WORKDIR /monolish/monolish-debian-package
 RUN gbp buildpackage
