@@ -1,4 +1,12 @@
-monolish (0.14.1-1+mkl+nvidia) UNRELEASED; urgency=medium
+monolish (0.14.2-1+mkl+nvidia) UNRELEASED; urgency=medium
+
+  [ Ryo IGARASHI ]
+  * New upstream release.
+  * Remove set -e switch for now.
+
+ -- Toshiaki Hishinuma <hishinuma@ricos.co.jp>  Wed, 15 Sep 2021 15:53:32 +0900
+
+monolish (0.14.1-1+mkl+nvidia) focal; urgency=medium
 
   [ Ryo IGARASHI ]
   * Update Dockerfile.
